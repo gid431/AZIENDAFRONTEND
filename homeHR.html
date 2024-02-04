@@ -40,7 +40,7 @@
                 <h2>Elenco di tutti i dipendenti che lavorano su un determinato progetto</h2>
 
                 <div class="dropdown" id="dropdownProgetti">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButtonProgetti" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       Scegli il nome del progetto
                     </button>
                     <div class="dropdown-menu" id="dropdownmenuProgetti" aria-labelledby="dropdownMenuButton">
@@ -48,28 +48,17 @@
                     </div>
                 </div>
                 <br>
-                <table class="table" id="table" name="table">
+                <table class="table" id="tableProgetti" name="table">
                     <thead class="thead-dark">
                         <tr>
-                        <th scope="col">Nome</th>
-                        <th scope="col">Cognome</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Mansione</th>
+                            <th scope="col">Nome</th>
+                            <th scope="col">Cognome</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Mansione</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                        <td scope="row">Mark</td>
-                        <td>Otto</td>
-                        <td>markotto@gmail.it</td>
-                        <td>sviluppatore front-end</td>
-                        </tr>
-                        <tr>
-                        <td scope="row">Jack</td>
-                        <td>Thornton</td>
-                        <td>JackThor@gmail.com</td>
-                        <td>HR</td>
-                        </tr>
+                        
                     </tbody>
                 </table>
             </div>
@@ -80,7 +69,7 @@
                 <h2>Dipendente con lo stipendio più alto per ogni compentence center</h2>
 
                 <div class="dropdown" id="dropdownCompetence">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButtonCompetence" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       Scegli il competence center
                     </button>
                     <div class="dropdown-menu" id="dropdownmenuCompetence" aria-labelledby="dropdownMenuButton">
@@ -169,7 +158,14 @@
                       //popola gli oggetti nuovi
                       $(progetti).each(function (index, element)
                       {
-                          $('#dropdownProgetti #dropdownmenuProgetti').append("<a class=\"dropdown-item\">"+element.nome+"</a>");
+                          $('#dropdownProgetti #dropdownmenuProgetti').append("<a id=\"id"+element.nome+"\"class=\"dropdown-item\">"+element.nome+"</a>");
+                      });
+
+                      // Aggiungi l'evento di cambio sulla dropdownlist
+                      $('#dropdownProgetti #dropdownmenuProgetti a').on('click', function() 
+                      {
+                          var selectedValueProgetti = $(this).text();
+                          invia_selezione_progetti_al_server(selectedValueProgetti);
                       });
                   },
                   error: function(error) {
@@ -189,7 +185,7 @@
                       //popola gli oggetti nuovi
                       $(competence).each(function (index, element)
                       {
-                          $('#dropdownCompetence #dropdownmenuCompetence').append("<a class=\"dropdown-item\">"+element+"</a>");
+                          $('#dropdownCompetence #dropdownmenuCompetence').append("<a id=\"id"+element+"\" class=\"dropdown-item\">"+element+"</a>");
                       });
                   },
                   error: function(error) {
@@ -197,6 +193,32 @@
                   }
               });
           }
+
+          function invia_selezione_progetti_al_server(selectedValueProgetti)
+				  {
+            $.ajax(
+            {
+                type: 'GET',
+                url: 'http://localhost:8080/assegnazioni/dipendentiSuProgetto/' + selectedValueProgetti, 
+                success: function(response) 
+                {
+                    // Gestisco la risposta dal server
+                    //rimuovi gli oggetti precedenti
+                    $('#dropdownMenuButtonProgetti').text(selectedValueProgetti);
+                    $("table tbody tr").remove();
+                    //popola gli oggetti nuovi
+                    $(response).each(function (index, element)
+                    {
+                        $('#tableProgetti tbody').append("<tr><td>"+element.dipendente.nome+"</td><td>"+element.dipendente.cognome+"</td><td>"+element.dipendente.email+"</td><td>"+element.dipendente.mansione+"</td></tr>)");
+                    });
+                },
+                error: function(error) 
+                {
+                    console.error('Error', error);
+                    $('#dropdownMenuButtonProgetti').text(selectedValueProgetti);
+                }
+            });
+				  }
 
       });
   </script>

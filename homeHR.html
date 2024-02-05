@@ -77,28 +77,18 @@
                     </div>
                 </div>
                 <br>
-                <table class="table" id="table" name="table">
+                <table class="table" id="tableCompetence" name="table">
                     <thead class="thead-dark">
                         <tr>
                           <th scope="col">Nome</th>
                           <th scope="col">Cognome</th>
                           <th scope="col">Email</th>
                           <th scope="col">Mansione</th>
+                          <th scope="col">Stipendio</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                          <td scope="row">Mark</td>
-                          <td>Otto</td>
-                          <td>markotto@gmail.it</td>
-                          <td>sviluppatore front-end</td>
-                        </tr>
-                        <tr>
-                          <td scope="row">Jack</td>
-                          <td>Thornton</td>
-                          <td>JackThor@gmail.com</td>
-                          <td>HR</td>
-                        </tr>
+
                     </tbody>
                 </table>
           </div>
@@ -187,6 +177,13 @@
                       {
                           $('#dropdownCompetence #dropdownmenuCompetence').append("<a id=\"id"+element+"\" class=\"dropdown-item\">"+element+"</a>");
                       });
+
+                      // Aggiungi l'evento di cambio sulla dropdownlist
+                      $('#dropdownCompetence #dropdownmenuCompetence a').on('click', function() 
+                      {
+                          var selectedValueCompetence = $(this).text();
+                          invia_selezione_competence_al_server(selectedValueCompetence);
+                      });
                   },
                   error: function(error) {
                       console.error('Error', error);
@@ -195,30 +192,56 @@
           }
 
           function invia_selezione_progetti_al_server(selectedValueProgetti)
-				  {
-            $.ajax(
             {
-                type: 'GET',
-                url: 'http://localhost:8080/assegnazioni/dipendentiSuProgetto/' + selectedValueProgetti, 
-                success: function(response) 
+                $.ajax(
                 {
-                    // Gestisco la risposta dal server
-                    //rimuovi gli oggetti precedenti
-                    $('#dropdownMenuButtonProgetti').text(selectedValueProgetti);
-                    $("table tbody tr").remove();
-                    //popola gli oggetti nuovi
-                    $(response).each(function (index, element)
+                    type: 'GET',
+                    url: 'http://localhost:8080/assegnazioni/dipendentiSuProgetto/' + selectedValueProgetti, 
+                    success: function(response) 
                     {
-                        $('#tableProgetti tbody').append("<tr><td>"+element.dipendente.nome+"</td><td>"+element.dipendente.cognome+"</td><td>"+element.dipendente.email+"</td><td>"+element.dipendente.mansione+"</td></tr>)");
-                    });
-                },
-                error: function(error) 
+                        // Gestisco la risposta dal server
+                        //rimuovi gli oggetti precedenti
+                        $('#dropdownMenuButtonProgetti').text(selectedValueProgetti);
+                        $("table tbody tr").remove();
+                        //popola gli oggetti nuovi
+                        $(response).each(function (index, element)
+                        {
+                            $('#tableProgetti tbody').append("<tr><td>"+element.dipendente.nome+"</td><td>"+element.dipendente.cognome+"</td><td>"+element.dipendente.email+"</td><td>"+element.dipendente.mansione+"</td></tr>)");
+                        });
+                    },
+                    error: function(error) 
+                    {
+                        console.error('Error', error);
+                        $('#dropdownMenuButtonProgetti').text(selectedValueProgetti);
+                    }
+                });
+            }
+
+            function invia_selezione_competence_al_server(selectedValueCompetence)
+            {
+                $.ajax(
                 {
-                    console.error('Error', error);
-                    $('#dropdownMenuButtonProgetti').text(selectedValueProgetti);
-                }
-            });
-				  }
+                    type: 'GET',
+                    url: 'http://localhost:8080/dipendenti/mostraStipendioAltoDipendente/' + selectedValueCompetence, 
+                    success: function(response) 
+                    {
+                        // Gestisco la risposta dal server
+                        //rimuovi gli oggetti precedenti
+                        $('#dropdownMenuButtonCompetence').text(selectedValueCompetence);
+                        $("table tbody tr").remove();
+                        //popola gli oggetti nuovi
+                        $(response).each(function (index, element)
+                        {
+                            $('#tableCompetence tbody').append("<tr><td>"+element.nome+"</td><td>"+element.cognome+"</td><td>"+element.email+"</td><td>"+element.mansione+"</td><td>"+element.stipendio+"</td></tr>)");
+                        });
+                    },
+                    error: function(error) 
+                    {
+                        console.error('Error', error);
+                        $('#dropdownMenuButtonCompetence').text(selectedValueCompetence);
+                    }
+                });
+            }
 
       });
   </script>

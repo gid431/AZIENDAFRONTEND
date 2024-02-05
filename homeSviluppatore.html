@@ -31,31 +31,37 @@
         </div>
       </div>
     </nav>
-
+   
     <div class="container">
       <div class="row justify-content-center align-items-center">
           <div class="col-md-11">
+            <h2>Benvenuto <span id="output"></span>
+                <script>
+                    document.getElementById("output").innerHTML = localStorage.getItem('mail');
+                </script>
+            </h2>
+          </div>
+
+          <div class="col-md-11">
             <h2>Elenco dei progetti al quale sei assegnato</h2>
-            <table class="table" id="table" name="table">
+            <table class="table" id="tableProgetti" name="table">
                 <thead class="thead-dark">
-                    <tr>
+                  <tr>
                     <th scope="col">Nome</th>
-                    </tr>
+                    <th scope="col">Budget</th>
+                    <th scope="col">Data inizio</th>
+                    <th scope="col">Data fine prevista</th>
+                  </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                    <td scope="row">Mark</td>
-                    </tr>
-                    <tr>
-                    <td scope="row">Jack</td>
-                    </tr>
+                <tbody id="bodyProgetti">
+                    
                 </tbody>
             </table>
           </div>
 
           <div class="col-md-11">
             <h2>Elenco dei dipendenti che fanno parte del tuo stesso competence center</h2>
-            <table class="table" id="table" name="table">
+            <table class="table" id="tableDipendenti" name="table">
                 <thead class="thead-dark">
                     <tr>
                       <th scope="col">Nome</th>
@@ -64,19 +70,8 @@
                       <th scope="col">Mansione</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                      <td scope="row">Mark</td>
-                      <td>Otto</td>
-                      <td>markotto@gmail.it</td>
-                      <td>sviluppatore front-end</td>
-                    </tr>
-                    <tr>
-                      <td scope="row">Jack</td>
-                      <td>Thornton</td>
-                      <td>JackThor@gmail.com</td>
-                      <td>HR</td>
-                    </tr>
+                <tbody id="bodyDipendenti">
+                    
                 </tbody>
             </table>
           </div>
@@ -116,7 +111,58 @@
   <script> 
     jQuery(document).ready( function () 
     {
-      
+      var mailUtenteLoggato = localStorage.getItem('mail');
+      mostra_progetti(mailUtenteLoggato);
+      setTimeout(()=>{mostra_dipendenti(mailUtenteLoggato)}, 1000);
+
+      function mostra_progetti(mailUtenteLoggato)
+      {
+          $.ajax(
+          {
+              type: 'GET',
+              url: 'http://localhost:8080/assegnazioni/progettoDiDipendente/' + mailUtenteLoggato, 
+              success: function(response) 
+              {
+                  // Gestisco la risposta dal server
+                  //rimuovi gli oggetti precedenti
+                  $("table tbody tr").remove();
+                  //popola gli oggetti nuovi
+                  $(response).each(function (index, element)
+                  {
+                      $('#tableProgetti #bodyProgetti').append("<tr><td>"+element.progetto.nome+"</td><td>"+element.progetto.budget+"</td><td>"+element.progetto.data_inizio+"</td><td>"+element.progetto.data_fine_prevista+"</td></tr>)");
+                  });
+              },
+              error: function(error) 
+              {
+                  console.error('Error', error);
+              }
+          });
+      }
+
+      function mostra_dipendenti(mailUtenteLoggato)
+      {
+          $.ajax(
+          {
+              type: 'GET',
+              url: 'http://localhost:8080/dipendenti/searchByCompetence/' + mailUtenteLoggato, 
+              success: function(response) 
+              {
+                  // Gestisco la risposta dal server
+                  //rimuovi gli oggetti precedenti
+                  //$("table tbody tr").remove();
+                  //popola gli oggetti nuovi
+                  $(response).each(function (index, element)
+                  {
+                      $('#tableDipendenti #bodyDipendenti').append("<tr><td>"+element.nome+"</td><td>"+element.cognome+"</td><td>"+element.email+"</td><td>"+element.mansione+"</td></tr>)");
+                  });
+              },
+              error: function(error) 
+              {
+                  console.error('Error', error);
+              }
+          });
+      }
+
     })
   </script>
 

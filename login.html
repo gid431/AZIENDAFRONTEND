@@ -47,6 +47,9 @@
 			{
 				$("#submit").click(function(e)
 				{
+                    //setto una variabile locale nel browser per simulare una sessione:
+                    //salvo la mail dell'utente che si sta loggando all'interno della variabile "mail" del localstorage del browser.
+                    localStorage.setItem('mail', $("#inputEmail").val());
 					invia_dati();
 				});
 
@@ -58,7 +61,6 @@
 
 				function invia_dati()
 				{
-                    
                     var data = new URLSearchParams();
                     data.append("email", $("#inputEmail").val());
                     data.append("password", $("#inputPassword").val());

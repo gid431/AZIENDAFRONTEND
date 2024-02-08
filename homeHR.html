@@ -23,7 +23,7 @@
 
   </head>
 
-  <body class="bg-light">
+<body class="bg-light">
     <nav class="navbar navbar-expand-lg navbar-light container" style="background-color: #e3f2fd;" >
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
@@ -36,6 +36,7 @@
 
     <div class="container">
         <div class="row justify-content-center align-items-center">
+
             <div class="col-md-11">
                 <h2>Benvenuto <span id="output"></span>
                     <script>
@@ -97,181 +98,187 @@
 
                     </tbody>
                 </table>
-          </div>
+            </div>
 
-          <div class="col-md-4">
-              <button type="button" class="btn btn-success" id="buttonProgetto" data-bs-toggle="buttonModalProgetto" data-bs-target="myModalProgetto">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-add" viewBox="0 0 16 16">
+            <div class="col-md-4">
+                <button type="button" class="btn btn-success" id="buttonProgetto" data-bs-toggle="buttonModalProgetto" data-bs-target="myModalProgetto">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-add" viewBox="0 0 16 16">
                     <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h4a.5.5 0 1 0 0-1h-4a.5.5 0 0 1-.5-.5V7.207l5-5 6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293z"></path>
                     <path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0m-3.5-2a.5.5 0 0 0-.5.5v1h-1a.5.5 0 0 0 0 1h1v1a.5.5 0 1 0 1 0v-1h1a.5.5 0 1 0 0-1h-1v-1a.5.5 0 0 0-.5-.5"></path>
-                  </svg>
-                  Inserisci nuovo progetto
-              </button>
-          </div>
+                    </svg>
+                    Inserisci nuovo progetto
+                </button>
+            </div>
 
-          <div class="it-example-modal">
-                <div class="modal" tabindex="-1" role="dialog" aria-labelledby="modal4Title" id="myModalProgetto">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h2 class="modal-title h5 " id="modal4Title">Compila i dati del progetto</h2>
-                                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Chiudi finestra modale">
-                                <svg class="icon"><use href="/bootstrap-italia/dist/svg/sprites.svg#it-close"></use></svg>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form action="http://localhost:8080/progetti" method="POST">
-                                    <div class="form-group mb-3">
-                                        <label for="exampleInputNome">Nome progetto</label>
-                                        <input type="nome" class="form-control" id="inputNomeProgetto" aria-describedby="nomeHelp" placeholder="Inserisci nome progetto">
-                                    </div>
+            <div class="col-md-4">
+                <div class="it-example-modal">
+                    <div class="modal" tabindex="-1" role="dialog" aria-labelledby="modal4Title" id="myModalProgetto">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h2 class="modal-title h5 " id="modal4Title">Compila i dati del progetto</h2>
+                                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Chiudi finestra modale">
+                                    <svg class="icon"><use href="/bootstrap-italia/dist/svg/sprites.svg#it-close"></use></svg>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="http://localhost:8080/progetti" method="POST">
+                                        <div class="form-group mb-3">
+                                            <label for="exampleInputNome">Nome progetto</label>
+                                            <input type="nome" class="form-control" id="inputNomeProgetto" aria-describedby="nomeHelp" placeholder="Inserisci nome progetto">
+                                        </div>
 
-                                    <div class="form-group mb-3">
-                                        <label for="exampleInputBudget">Budget progetto</label>
-                                        <input type="budget" class="form-control" id="inputBudget" placeholder="Inserisci budget">
-                                    </div>
+                                        <div class="form-group mb-3">
+                                            <label for="exampleInputBudget">Budget progetto</label>
+                                            <input type="budget" class="form-control" id="inputBudget" placeholder="Inserisci budget">
+                                        </div>
 
-                                    <div class="form-group mb-3">
-                                        <label class="active" for="exampleInputDataInizio">Data inizio progetto </label>   
-                                        <input type="date" id="inputDataInizio" name="dateStandard">   
-                                    </div>
+                                        <div class="form-group mb-3">
+                                            <label class="active" for="exampleInputDataInizio">Data inizio progetto </label>   
+                                            <input type="date" id="inputDataInizio" name="dateStandard">   
+                                        </div>
 
-                                    <div class="form-group mb-3">
-                                        <label class="active" for="exampleInputDataInizio">Data fine progetto prevista </label>   
-                                        <input type="date" id="inputDataFine" name="dateStandard">   
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button id="okButtonModalPorogetto" class="btn btn-primary btn-sm" type="button" disabled="">Ok</button>
+                                        <div class="form-group mb-3">
+                                            <label class="active" for="exampleInputDataInizio">Data fine progetto prevista </label>   
+                                            <input type="date" id="inputDataFine" name="dateStandard">   
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button id="okButtonModalPorogetto" class="btn btn-primary btn-sm" type="button" disabled="">Ok</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-          <div class="col-md-4">
-              <button type="button" class="btn btn-success" id="buttonDipendente" data-bs-toggle="buttonModalDipendente" data-bs-target="myModalDipendente">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-plus" viewBox="0 0 16 16">
-                  <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"></path>
-                  <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5"></path>
-                  </svg>
-                  Inserisci nuovo dipendente
-              </button>
-          </div>
+            <div class="col-md-4">
+                <button type="button" class="btn btn-success" id="buttonDipendente" data-bs-toggle="buttonModalDipendente" data-bs-target="myModalDipendente">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-plus" viewBox="0 0 16 16">
+                    <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"></path>
+                    <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5"></path>
+                    </svg>
+                    Inserisci nuovo dipendente
+                </button>
+            </div>
+        
+            <div class="col-md-4">
+                <div class="it-example-modal">
+                    <div class="modal" tabindex="-1" role="dialog" aria-labelledby="modal4Title" id="myModalDipendente">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h2 class="modal-title h5 " id="modal4Title">Compila i dati del dipendente</h2>
+                                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Chiudi finestra modale">
+                                    <svg class="icon"><use href="/bootstrap-italia/dist/svg/sprites.svg#it-close"></use></svg>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="http://localhost:8080/dipendenti" method="POST">
+                                        <div class="form-group mb-3">
+                                            <label for="exampleInputNome">Nome dipendente</label>
+                                            <input type="nome" class="form-control" id="inputNomeDipendente" aria-describedby="nomeHelp" placeholder="Inserisci nome dipendente">
+                                        </div>
 
-          <div class="it-example-modal">
-            <div class="modal" tabindex="-1" role="dialog" aria-labelledby="modal4Title" id="myModalDipendente">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h2 class="modal-title h5 " id="modal4Title">Compila i dati del dipendente</h2>
-                            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Chiudi finestra modale">
-                            <svg class="icon"><use href="/bootstrap-italia/dist/svg/sprites.svg#it-close"></use></svg>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="http://localhost:8080/dipendenti" method="POST">
-                                <div class="form-group mb-3">
-                                    <label for="exampleInputNome">Nome dipendente</label>
-                                    <input type="nome" class="form-control" id="inputNomeDipendente" aria-describedby="nomeHelp" placeholder="Inserisci nome dipendente">
+                                        <div class="form-group mb-3">
+                                            <label for="exampleInputCognome">Cognome dipendente</label>
+                                            <input type="nome" class="form-control" id="inputCognomeDipendente" aria-describedby="nomeHelp" placeholder="Inserisci cognome dipendente">
+                                        </div>
+
+                                        <div class="form-group mb-3">
+                                            <label for="exampleCompetenceCenter">Competence center</label>
+                                            <div class="form-check form-check-inline">
+                                            <input name="gruppo2" type="radio" value="AI" id="radioAI" checked>
+                                            <label for="radio4">AI</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                            <input name="gruppo2" type="radio" value="Banking" id="radioBanking">
+                                            <label for="radio5">Banking</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input name="gruppo2" type="radio" value="PA" id="radioPA">
+                                                <label for="radio5">PA</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group mb-3">
+                                            <label for="exampleMansione">Mansione</label>
+                                            <div class="form-check form-check-inline">
+                                            <input name="gruppo3" type="radio" value="HR" id="radioHR" checked>
+                                            <label for="radio4">HR</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                            <input name="gruppo3" type="radio" value="sviluppatore front-end" id="radioFrontend">
+                                            <label for="radio5">sviluppatore fron-end</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input name="gruppo3" type="radio" value="sviluppatore back-end" id="radioBackend">
+                                                <label for="radio5">sviluppatore back-end</label>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-group mb-3">
+                                            <label for="inputStipendio" class="input-number-label active">Stipendio in ral</label>
+                                            <div class="input-group input-number">
+                                                <input type="number" class="form-control" data-bs-input id="inputStipendio" name="inputStipendio" value="30000" min="20000" max="50000" step="100" />
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-group mb-3">
+                                            <label class="active" for="exampleInputDataNascita">Data inizio di nascita </label>   
+                                            <input type="date" id="inputDataNascita" name="dateStandard">   
+                                        </div>
+
+                                        <div class="form-group mb-3">
+                                            <label for="exampleInputStatoNascita">Stato di nascita</label>
+                                            <input type="name" class="form-control" id="inputStatoNascita" placeholder="Inserisci lo stato di nascita">
+                                        </div>
+
+                                        <div class="form-group mb-3">
+                                            <label for="exampleInputProvinciaNascita">Provincia di nascita</label>
+                                            <input type="name" class="form-control" id="inputProvinciaNascita" placeholder="Inserisci la provincia di nascita">
+                                        </div>
+
+                                        <div class="form-group mb-3">
+                                            <label for="exampleInputComuneNascita">Comune di nascita</label>
+                                            <input type="name" class="form-control" id="inputComuneNascita" placeholder="Inserisci il comune di nascita">
+                                        </div>
+
+                                        <div class="form-group mb-3">
+                                            <label for="exampleInputCodiceFiscale">Codice fiscale</label>
+                                            <input type="name" class="form-control" id="inputCodiceFiscale" placeholder="Inserisci il codice fiscale">
+                                        </div>
+
+                                        <div class="form-group mb-3">
+                                            <label for="exampleInputCellulare">Numero cellulare</label>
+                                            <input type="name" class="form-control" id="inputCellulare" placeholder="Inserisci il numero cellulare">
+                                        </div>
+
+                                        <div class="form-group mb-3">
+                                            <label for="exampleInputEmail">Email aziendale</label>
+                                            <input type="name" class="form-control" id="inputEmail" placeholder="Inserisci l'email aziendale">
+                                        </div>
+
+                                        <div class="form-group mb-3">
+                                            <label for="exampleInputEmail">Password aziendale</label>
+                                            <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+                                        </div>
+                                    </form>
                                 </div>
 
-                                <div class="form-group mb-3">
-                                    <label for="exampleInputCognome">Cognome dipendente</label>
-                                    <input type="nome" class="form-control" id="inputCognomeDipendente" aria-describedby="nomeHelp" placeholder="Inserisci cognome dipendente">
+                                <div class="modal-footer">
+                                    <button id="okButtonModalDipendente" class="btn btn-primary btn-sm" type="button" disabled="">Ok</button>
                                 </div>
-
-                                <div class="form-group mb-3">
-                                    <label for="exampleCompetenceCenter">Competence center</label>
-                                    <div class="form-check form-check-inline">
-                                      <input name="gruppo2" type="radio" id="radioAI" checked>
-                                      <label for="radio4">AI</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                      <input name="gruppo2" type="radio" id="radioBanking">
-                                      <label for="radio5">Banking</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input name="gruppo2" type="radio" id="radioPA">
-                                        <label for="radio5">PA</label>
-                                    </div>
-                                </div>
-
-                                <div class="form-group mb-3">
-                                    <label for="exampleMansione">Mansione</label>
-                                    <div class="form-check form-check-inline">
-                                      <input name="gruppo3" type="radio" id="radioHR" checked>
-                                      <label for="radio4">HR</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                      <input name="gruppo3" type="radio" id="radioFrontend">
-                                      <label for="radio5">sviluppatore fron-end</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input name="gruppo3" type="radio" id="radioBackend">
-                                        <label for="radio5">sviluppatore back-end</label>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group mb-3">
-                                    <label for="inputStipendio" class="input-number-label active">Stipendio in ral</label>
-                                    <div class="input-group input-number">
-                                        <input type="number" class="form-control" data-bs-input id="inputStipendio" name="inputStipendio" value="30000" min="20000" max="50000" step="100" />
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group mb-3">
-                                    <label class="active" for="exampleInputDataNascita">Data inizio di nascita </label>   
-                                    <input type="date" id="inputDataNascita" name="dateStandard">   
-                                </div>
-
-                                <div class="form-group mb-3">
-                                    <label for="exampleInputStatoNascita">Stato di nascita</label>
-                                    <input type="name" class="form-control" id="inputStatoNascita" placeholder="Inserisci lo stato di nascita">
-                                </div>
-
-                                <div class="form-group mb-3">
-                                    <label for="exampleInputProvinciaNascita">Provincia di nascita</label>
-                                    <input type="name" class="form-control" id="inputProvinciaNascita" placeholder="Inserisci la provincia di nascita">
-                                </div>
-
-                                <div class="form-group mb-3">
-                                    <label for="exampleInputComuneNascita">Comune di nascita</label>
-                                    <input type="name" class="form-control" id="inputComuneNascita" placeholder="Inserisci il comune di nascita">
-                                </div>
-
-                                <div class="form-group mb-3">
-                                    <label for="exampleInputCodiceFiscale">Codice fiscale</label>
-                                    <input type="name" class="form-control" id="inputCodiceFiscale" placeholder="Inserisci il codice fiscale">
-                                </div>
-
-                                <div class="form-group mb-3">
-                                    <label for="exampleInputCellulare">Numero cellulare</label>
-                                    <input type="name" class="form-control" id="inputCellulare" placeholder="Inserisci il numero cellulare">
-                                </div>
-
-                                <div class="form-group mb-3">
-                                    <label for="exampleInputEmail">Email aziendale</label>
-                                    <input type="name" class="form-control" id="inputEmail" placeholder="Inserisci l'email aziendale">
-                                </div>
-
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button id="okButtonModalDipendente" class="btn btn-primary btn-sm" type="button" disabled="">Ok</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-
-          
 
         </div>
     </div>
-
-	</body>
+</body>
   <br><br>
 	<div class="container" style="background-color: #e3f2fd;">
     <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
@@ -292,7 +299,7 @@
         componi_dati_progetti();
         componi_dati_competence();
 
-        //configurazione delle modal di inserimento progetto e dipendente
+        //configurazione delle modal di inserimento progetto e dipendente per farle visualizzare
         var buttonProgetto = document.getElementById('buttonProgetto');
         var myModalProgetto = new bootstrap.Modal(document.getElementById('myModalProgetto'));
         var buttonDipendente = document.getElementById('buttonDipendente');
@@ -305,7 +312,7 @@
         {
             myModalDipendente.show(); // Mostra la modale dipendente
         });
-        // Seleziona tutti gli input del modulo progetto e dipendente
+        // Seleziona tutti gli input del modulo progetto e dipendente (configurazione per abilitare disattivare il tasto ok)
         var inputsProgetto = document.querySelectorAll('#myModalProgetto .modal-body input');
         var inputsDipendente = document.querySelectorAll('#myModalDipendente .modal-body input');
         // Seleziona il pulsante "Ok" progetto
@@ -362,6 +369,7 @@
             $("#inputBudget").val("");
             $("#inputDataInizio").val("");
             $("#inputDataFine").val("");
+            okButtonProgetto.disabled = true;
         }
         
         //svuota le text box delle modal dipendente
@@ -375,6 +383,8 @@
             $("#inputCodiceFiscale").val("");
             $("#inputCellulare").val("");
             $("#inputEmail").val("");
+            $("#inputPassword").val("");
+            okButtonDipendente.disabled = true;
         }
 
         //funzione di inserimento di un progetto
@@ -420,10 +430,8 @@
             var radioButtonSelezionato1 = document.querySelector('input[name="gruppo3"]:checked');
             // Ottieni il valore selezionato della mansione
             var valoreSelezionatoMansione = radioButtonSelezionato1.value;
-             // Seleziona l'elemento radio button che è stato selezionato
-             var radioButtonSelezionato2 = document.querySelector('input[name="gruppo2"]:checked');
-             // Ottieni il valore selezionato del competence
-             var valoreSelezionatoCompetence = radioButtonSelezionato2.value;
+            var radioButtonSelezionato2 = document.querySelector('input[name="gruppo2"]:checked');
+            var valoreSelezionatoCompetence = radioButtonSelezionato2.value;
 
             var data = 
             {
@@ -438,7 +446,8 @@
                 comune_nascita: $("#inputComuneNascita").val(),
                 codice_fiscale: $("#inputCodiceFiscale").val(),
                 numero_cellulare: $("#inputCellulare").val(),
-                email_aziendale: $("#inputEmail").val()
+                email: $("#inputEmail").val(),
+                password: $("#inputPassword").val(),
             };
 
             $.ajax(

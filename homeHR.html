@@ -29,7 +29,7 @@
         <div class="navbar-nav">
           <a class="nav-item nav-link active" href="http://localhost/homeHR.html">Home Human Resources<span class="sr-only"></span></a>
           <a class="nav-item nav-link" href="http://localhost/utentiLoggati.html">Visualizza Utenti In Linea Loggati</a>
-          <a class="nav-item nav-link" href="http://localhost/login.html" id="logout">Logout</a>
+          <a class="nav-item nav-link" id="logout">Logout</a>
         </div>
       </div>
     </nav>
@@ -293,6 +293,7 @@
   <script> 
       $(document).ready(function()
       {
+        var mailUtenteLoggato = localStorage.getItem('mail');
         // Inizializza tutte le dropdown del documento
         $('.dropdown-toggle').dropdown();
         //popola le dropdown dei progetti e competence dai dai del db salvati
@@ -585,7 +586,35 @@
                 });
             }
 
-      });
+            function effettua_logout(mailUtenteLoggato)
+            { 
+                $.ajax(
+                {
+                    type: 'GET',
+                    url: 'http://localhost:8080/dipendenti/logout/' + mailUtenteLoggato, 
+                    success: function(response) 
+                    {
+                        console.log("Risposta dal server:", response);
+                        localStorage.removeItem('mail');
+                        alert(response);
+                        //reindirizzamento
+                        var url = "http://localhost/login.html";
+                        $(location).attr('href',url);
+                    },
+                    error: function(xhr, status, error) 
+                    {
+                        console.error("Errore durante la richiesta AJAX:", error);
+                        alert("Errore durante il logout");
+                    }
+                });
+            }
+
+            $("#logout").click(function(e)
+            {
+                effettua_logout(mailUtenteLoggato);
+            });
+
+      })
   </script>
 
 </html>

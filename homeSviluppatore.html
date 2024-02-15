@@ -35,7 +35,7 @@
     <div class="container">
       <div class="row justify-content-center align-items-center">
           <div class="col-md-11">
-            <h2>Benvenuto <span id="output"></span>
+            <h2>Benvenuto <span id="output"></span>, <span id="mansione"></span>
                 <script>
                     document.getElementById("output").innerHTML = localStorage.getItem('mail');
                 </script>
@@ -139,8 +139,14 @@
     jQuery(document).ready( function () 
     {
       var mailUtenteLoggato = localStorage.getItem('mail');
+      //mostro i progetti nelle tabelle
       mostra_progetti(mailUtenteLoggato);
+      //mostro i dipendenti nelle tabelle dopo un tot di tempo per non generare errore con mostra_proretti
       setTimeout(()=>{mostra_dipendenti(mailUtenteLoggato)}, 1000);
+      //popolo l'elementi html con id mansione con il risultato della funzione
+      get_mansione_utente_loggato(mailUtenteLoggato, function(mansione) {
+          document.getElementById("mansione").innerHTML = mansione;
+      });
 
       //configurazione delle modal di modifica numero cellulare per farla visualizzare
       var buttonCellulare = document.getElementById('buttonCellulare');
@@ -229,6 +235,32 @@
           });
       }
 
+      //funzione che data la mail dell'utente loggato, ti ritorna la mansione
+      function get_mansione_utente_loggato(mailUtenteLoggato, callback)
+      {
+          $.ajax(
+          {
+              type: 'GET',
+              url: 'http://localhost:8080/dipendenti/getMansione/' + mailUtenteLoggato, 
+              success: function(response) 
+              {
+                  if(response == "dipendente non esistente")
+                  {
+                      callback("mansione non disponibile");
+                  }
+                  else
+                  {
+                      callback(response);
+                  }
+              },
+              error: function(error) 
+              {
+                  console.error('Error', error);
+                  callback("errore nella richiesta");
+              }
+          });
+      }
+
       //funzione che modifica il numero di cellulare del dipendente loggato
       function modifica_cellulare(mailUtenteLoggato)
       {
@@ -259,9 +291,8 @@
               url: 'http://localhost:8080/dipendenti/logout/' + mailUtenteLoggato, 
               success: function(response) 
               {
-                  console.log("Risposta dal server:", response);
                   localStorage.removeItem('mail');
-                  alert(response);
+                  alert("Logout effettuato");
                   //reindirizzamento
                   var url = "http://localhost/login.html";
                   $(location).attr('href',url);

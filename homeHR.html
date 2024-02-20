@@ -101,7 +101,7 @@
                 </table>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-5">
                 <button type="button" class="btn btn-success" id="buttonProgetto" data-bs-toggle="buttonModalProgetto" data-bs-target="myModalProgetto">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-add" viewBox="0 0 16 16">
                     <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h4a.5.5 0 1 0 0-1h-4a.5.5 0 0 1-.5-.5V7.207l5-5 6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293z"></path>
@@ -111,7 +111,7 @@
                 </button>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-5">
                 <div class="it-example-modal">
                     <div class="modal" tabindex="-1" role="dialog" aria-labelledby="modal4Title" id="myModalProgetto">
                         <div class="modal-dialog" role="document">
@@ -154,7 +154,7 @@
                 </div>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-5">
                 <button type="button" class="btn btn-success" id="buttonDipendente" data-bs-toggle="buttonModalDipendente" data-bs-target="myModalDipendente">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-plus" viewBox="0 0 16 16">
                     <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"></path>
@@ -164,7 +164,7 @@
                 </button>
             </div>
         
-            <div class="col-md-4">
+            <div class="col-md-5">
                 <div class="it-example-modal">
                     <div class="modal" tabindex="-1" role="dialog" aria-labelledby="modal4Title" id="myModalDipendente">
                         <div class="modal-dialog" role="document">
@@ -277,6 +277,64 @@
                 </div>
             </div>
 
+            <div class="col-md-5">
+                <button type="button" class="btn btn-success" id="buttonAssegnazione" data-bs-toggle="modal4Title" data-bs-target="myModalAssegnazione">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-plus-fill" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5m6.5-11a.5.5 0 0 0-1 0V6H6a.5.5 0 0 0 0 1h1.5v1.5a.5.5 0 0 0 1 0V7H10a.5.5 0 0 0 0-1H8.5z"/>
+                    </svg>
+                    Assegna un nuovo progetto ad uno sviluppatore
+                </button>
+            </div>
+
+            <div class="col-md-5">
+                <div class="it-example-modal">
+                    <div class="modal" tabindex="-1" role="dialog" aria-labelledby="modal4Title" id="myModalAssegnazione">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h2 class="modal-title h5 " id="modal4Title">Scegli i dati</h2>
+                                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Chiudi finestra modale">
+                                    <svg class="icon"><use href="/bootstrap-italia/dist/svg/sprites.svg#it-close"></use></svg>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="http://localhost:8080/" method="POST">
+                                        <h1>Seleziona lo sviluppatore a cui assegnare il progetto</h1>
+                                        <table class="table" id="tableDipendentiModalAssegnazione" name="table">
+                                            <thead class="thead-dark">
+                                                <tr>
+                                                  <th scope="col">Nome</th>
+                                                  <th scope="col">Cognome</th>
+                                                  <th scope="col">Email</th>
+                                                  <th scope="col">Mansione</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                        
+                                            </tbody>
+                                        </table>
+
+                                        <br><br>
+                                        <h1>Ecco visualizzati i progetti a cui non è assegnato lo sviluppatore:</h1>
+                                        <div class="dropdown" id="dropdownProgettiModalAssegnazione">
+                                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButtonProgettoAssegnazione" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Seleziona il progetto da assegnare
+                                            </button>
+                                            <div class="dropdown-menu" id="dropdownMenuProgettoAssegnazione" aria-labelledby="dropdownMenuButton">
+                                              
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button id="okButtonModalAssegnazione" class="btn btn-primary btn-sm" type="button" disabled="">Ok</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </body>
@@ -310,6 +368,9 @@
         var myModalProgetto = new bootstrap.Modal(document.getElementById('myModalProgetto'));
         var buttonDipendente = document.getElementById('buttonDipendente');
         var myModalDipendente = new bootstrap.Modal(document.getElementById('myModalDipendente'));
+        var buttonAssegnazione = document.getElementById('buttonAssegnazione');
+        var myModalAssegnazione = new bootstrap.Modal(document.getElementById('myModalAssegnazione'));
+        //eventi click dei pulsanti delle modali
         buttonProgetto.addEventListener('click', function() 
         {
             myModalProgetto.show(); // Mostra la modale progetto
@@ -318,6 +379,11 @@
         {
             myModalDipendente.show(); // Mostra la modale dipendente
         });
+        buttonAssegnazione.addEventListener('click', function() 
+        {
+            myModalAssegnazione.show(); // Mostra la modale assegnazione
+        });
+
         // Seleziona tutti gli input del modulo progetto e dipendente (configurazione per abilitare disattivare il tasto ok)
         var inputsProgetto = document.querySelectorAll('#myModalProgetto .modal-body input');
         var inputsDipendente = document.querySelectorAll('#myModalDipendente .modal-body input');
@@ -582,7 +648,7 @@
                         // Gestisco la risposta dal server
                         //rimuovi gli oggetti precedenti
                         $('#dropdownMenuButtonProgetti').text(selectedValueProgetti);
-                        $("table tbody tr").remove();
+                        $("#tableProgetti tbody tr").remove();
                         //popola gli oggetti nuovi
                         $(response).each(function (index, element)
                         {
@@ -609,7 +675,7 @@
                         // Gestisco la risposta dal server
                         //rimuovi gli oggetti precedenti
                         $('#dropdownMenuButtonCompetence').text(selectedValueCompetence);
-                        $("table tbody tr").remove();
+                        $("#tableCompetence tbody tr").remove();
                         //popola gli oggetti nuovi
                         $(response).each(function (index, element)
                         {

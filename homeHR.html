@@ -293,7 +293,7 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h2 class="modal-title h5 " id="modal4Title">Scegli i dati</h2>
-                                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Chiudi finestra modale">
+                                    <button id="buttonChiudiModalAssegnazione" class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Chiudi finestra modale">
                                     <svg class="icon"><use href="/bootstrap-italia/dist/svg/sprites.svg#it-close"></use></svg>
                                     </button>
                                 </div>
@@ -307,6 +307,7 @@
                                                   <th scope="col">Cognome</th>
                                                   <th scope="col">Email</th>
                                                   <th scope="col">Mansione</th>
+                                                  <th scope="col">Seleziona</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -382,7 +383,9 @@
         buttonAssegnazione.addEventListener('click', function() 
         {
             myModalAssegnazione.show(); // Mostra la modale assegnazione
+            popola_tabella_sviluppatori_modal_assegnazione();
         });
+        
 
         // Seleziona tutti gli input del modulo progetto e dipendente (configurazione per abilitare disattivare il tasto ok)
         var inputsProgetto = document.querySelectorAll('#myModalProgetto .modal-body input');
@@ -390,6 +393,7 @@
         // Seleziona il pulsante "Ok" progetto
         var okButtonProgetto = document.querySelector('#okButtonModalPorogetto');
         var okButtonDipendente = document.querySelector('#okButtonModalDipendente');
+        var okButtonModalAssegnazione = document.querySelector('#okButtonModalAssegnazione');
         // Funzione per controllare se tutti i campi della modal progetto sono stati compilati
         function checkInputsProgetto() 
         {
@@ -520,6 +524,13 @@
             invia_dati_modal_progetto();
         });
 
+        $("#buttonChiudiModalAssegnazione").click(function(e)
+        {
+            $('#dropdownMenuButtonProgettoAssegnazione').text("Seleziona il progetto da assegnare");
+            $('#dropdownProgettiModalAssegnazione #dropdownMenuProgettoAssegnazione a').remove();
+            okButtonModalAssegnazione.disabled = true;
+        });
+
 
         //funzione di inserimento di un dipendente
         function invia_dati_modal_dipendente()
@@ -608,6 +619,35 @@
               });
           }
 
+          function componi_dati_progetti_non_assegnati_a_dipendente(email)
+          {
+              $.ajax({
+                  url: 'http://localhost:8080/progetti/progettiNonAssegnatiADip/' + email,
+                  type: 'GET',
+                  dataType: 'json', // Assuming your backend returns JSON
+                  success: function(progetti) 
+                  {
+                      //popola gli oggetti nuovi
+                      $(progetti).each(function (index, element)
+                      {
+                          $('#dropdownProgettiModalAssegnazione #dropdownMenuProgettoAssegnazione').append("<a id=\"id"+element.nome+"\"class=\"dropdown-item\">"+element.nome+"</a>");
+                      });
+
+                      // Aggiungi l'evento di cambio sulla dropdownlist
+                      $('#dropdownProgettiModalAssegnazione #dropdownMenuProgettoAssegnazione a').on('click', function() 
+                      {
+                        var selectedValueModalAssegnazioniDipendente = $(this).text();
+                        $('#dropdownMenuButtonProgettoAssegnazione').text(selectedValueModalAssegnazioniDipendente);
+                        //abiliti il tasto ok
+                        okButtonModalAssegnazione.disabled = false;
+                      });
+                  },
+                  error: function(error) {
+                      console.error('Error', error);
+                  }
+              });
+          }
+
           //funzione che popola la drop down list con tutti i competence center nel db
           function componi_dati_competence()
           {
@@ -662,6 +702,55 @@
                     }
                 });
             }
+
+        //funzione che popola la tabella con il radio button
+          function popola_tabella_sviluppatori_modal_assegnazione()
+          {
+              $.ajax(
+              {
+                  type: 'GET',
+                  url: 'http://localhost:8080/dipendenti/tuttiSviluppatori', 
+                  success: function(response) 
+                  {
+                      // Gestisco la risposta dal server
+                      //rimuovi gli oggetti precedenti
+                      $("#tableDipendentiModalAssegnazione tbody tr").remove();
+                      //popola gli oggetti nuovi
+                      const tableBody = $('#tableDipendentiModalAssegnazione tbody');
+                      tableBody.empty();
+                      $(response).each(function (index, element)
+                      {
+                        const row = $('<tr>');
+                        $('<td>').text(element.nome).appendTo(row);
+                        $('<td>').text(element.cognome).appendTo(row);
+                        $('<td>').text(element.email).appendTo(row);
+                        $('<td>').text(element.mansione).appendTo(row);
+                        //$('#tableDipendentiModalAssegnazione tbody').append("<tr><td>"+element.dipendente.nome+"</td><td>"+element.dipendente.cognome+"</td><td>"+element.dipendente.email+"</td><td>"+element.dipendente.mansione+"</td></tr>)");
+                        const radioCell = $('<td>');
+                        $('<input>').attr({
+                            type : 'radio',
+                            name : 'selezionaDipendente',
+                            value : element.email
+                        }).appendTo(radioCell);
+                        radioCell.appendTo(row);
+                        tableBody.append(row);
+                       });
+                    },
+                  error: function(error) 
+                  {
+                      console.error('Error', error);
+                  }
+              });
+          }
+
+          //funzione di gestione dell'evento di clic sul radio button della modale assegnazioni
+          $(document).on('click', 'input[name = "selezionaDipendente"]', function()
+          {
+            const email = $(this).val();
+            //alert("Prova " + email); PROVA PER VEDERE SE PRENDE LA MAIL IN INPUT
+            //chiama funzione per popolare dropdown box
+            componi_dati_progetti_non_assegnati_a_dipendente(email);
+          })
 
             //funzione che dato una competence center selezionata dalla drop down, ti fa vedere i suoi dipendenti con il massimo stipendio
             function invia_selezione_competence_al_server(selectedValueCompetence)

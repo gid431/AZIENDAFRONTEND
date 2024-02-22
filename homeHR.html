@@ -438,7 +438,7 @@
         checkInputsDipendente();
 
 
-        //svuota le text box delle modal progetto
+        //svuota le text box delle modal di inserimento progetto
         function svuota_textbox_modal_progetto()
         {
             $("#inputNomeProgetto").val("");
@@ -448,7 +448,7 @@
             okButtonProgetto.disabled = true;
         }
         
-        //svuota le text box delle modal dipendente
+        //svuota le text box delle modal di inserimento dipendente
         function svuota_textbox_modal_dipendente()
         {
             $("#inputNomeDipendente").val("");
@@ -489,7 +489,7 @@
             });
         }
 
-        //funzione di inserimento di un progetto
+        //funzione di inserimento di un progetto della modal progetto
         function invia_dati_modal_progetto()
         {
             var data = 
@@ -519,20 +519,53 @@
             });
         }
 
+        //quando clicchi ok alla modal di un inserimento di un progetto
         $("#okButtonModalPorogetto").click(function(e)
         {
+            //inserisce un progetto
             invia_dati_modal_progetto();
         });
 
+        //quando clicchi chiudi alla modal assegnazione
         $("#buttonChiudiModalAssegnazione").click(function(e)
         {
+            //inserisci il testo "seleziona..." nella dropdown
             $('#dropdownMenuButtonProgettoAssegnazione').text("Seleziona il progetto da assegnare");
+            //pulisci i valori di cui è popolata la drop down
             $('#dropdownProgettiModalAssegnazione #dropdownMenuProgettoAssegnazione a').remove();
+            //disabilita il tasto ok
             okButtonModalAssegnazione.disabled = true;
         });
 
+        //funzione che prende in input i dati immessi nella modal assegnazione per effettuare l'inserimento dell'assegnazione nel db
+        function invia_dati_modal_assegnazione(email, progetto)
+        {
+            $.ajax({
+                url: 'http://localhost:8080/assegnazioni/addAssegnazione/' + email + '/' + progetto,
+                type: 'GET',
+                success: function(response) 
+                {
+                    alert(response);
+                },
+                error: function(error) 
+                {
+                    console.error('Error', error);
+                    alert("Errore operazione");
+                }
+            });
+        }
 
-        //funzione di inserimento di un dipendente
+        //quando clicchi ok alla modal di un inserimento di una assegnazione
+        $("#okButtonModalAssegnazione").click(function(e)
+        {
+            //prendi in input tutti i valori selezionati
+            var emailDipendente = $('input[type="radio"][name="selezionaDipendente"]:checked').val();
+            var nomeProgetto = $('#dropdownMenuButtonProgettoAssegnazione').text();   
+            //chiama la funzione in get di inserimento assegnazione che passa in input i valori selezionati
+            invia_dati_modal_assegnazione(emailDipendente, nomeProgetto);
+        });
+
+        //funzione di inserimento di un dipendente della modal dipendente
         function invia_dati_modal_dipendente()
         {
             // Seleziona l'elemento radio button che è stato selezionato
@@ -585,226 +618,238 @@
             });
         }
 
+        //quando clicchi ok alla modal di un inserimento di un dipendente
         $("#okButtonModalDipendente").click(function(e)
         {
+            //inserisce un dipendente
             invia_dati_modal_dipendente();
         });
 
-
         //funzione che popola la drop down list con tutti i progetti nel db
-          function componi_dati_progetti()
-          {
-              $.ajax({
-                  url: 'http://localhost:8080/progetti/tuttiProgetti',
-                  type: 'GET',
-                  dataType: 'json', // Assuming your backend returns JSON
-                  success: function(progetti) 
-                  {
-                      //popola gli oggetti nuovi
-                      $(progetti).each(function (index, element)
-                      {
-                          $('#dropdownProgetti #dropdownmenuProgetti').append("<a id=\"id"+element.nome+"\"class=\"dropdown-item\">"+element.nome+"</a>");
-                      });
+        function componi_dati_progetti()
+        {
+            $.ajax({
+                url: 'http://localhost:8080/progetti/tuttiProgetti',
+                type: 'GET',
+                dataType: 'json', // Assuming your backend returns JSON
+                success: function(progetti) 
+                {
+                    //popola gli oggetti nuovi
+                    $(progetti).each(function (index, element)
+                    {
+                        $('#dropdownProgetti #dropdownmenuProgetti').append("<a id=\"id"+element.nome+"\"class=\"dropdown-item\">"+element.nome+"</a>");
+                    });
 
-                      // Aggiungi l'evento di cambio sulla dropdownlist
-                      $('#dropdownProgetti #dropdownmenuProgetti a').on('click', function() 
-                      {
-                          var selectedValueProgetti = $(this).text();
-                          invia_selezione_progetti_al_server(selectedValueProgetti);
-                      });
-                  },
-                  error: function(error) {
-                      console.error('Error', error);
-                  }
-              });
-          }
+                    // Aggiungi l'evento di cambio sulla dropdownlist
+                    $('#dropdownProgetti #dropdownmenuProgetti a').on('click', function() 
+                    {
+                        //prende il valore selezionato della dropdown list dei progetti
+                        var selectedValueProgetti = $(this).text();
+                        //chiama la funzione per popolare la tabella dei dipendenti presenti in quel progetto che è stato selezionato dalla drop down
+                        invia_selezione_progetti_al_server(selectedValueProgetti);
+                    });
+                },
+                error: function(error) {
+                    console.error('Error', error);
+                }
+            });
+        }
 
-          function componi_dati_progetti_non_assegnati_a_dipendente(email)
-          {
-              $.ajax({
-                  url: 'http://localhost:8080/progetti/progettiNonAssegnatiADip/' + email,
-                  type: 'GET',
-                  dataType: 'json', // Assuming your backend returns JSON
-                  success: function(progetti) 
-                  {
-                      //popola gli oggetti nuovi
-                      $(progetti).each(function (index, element)
-                      {
-                          $('#dropdownProgettiModalAssegnazione #dropdownMenuProgettoAssegnazione').append("<a id=\"id"+element.nome+"\"class=\"dropdown-item\">"+element.nome+"</a>");
-                      });
+        //funzione che presa in input la mail di un dip, popola la drop down con i valori dei progetti nel db non assegnati al dip  
+        function componi_dati_progetti_non_assegnati_a_dipendente(email)
+        {
+            $.ajax({
+                url: 'http://localhost:8080/progetti/progettiNonAssegnatiADip/' + email,
+                type: 'GET',
+                dataType: 'json', // Assuming your backend returns JSON
+                success: function(progetti) 
+                {
+                    //popola gli oggetti nuovi
+                    $(progetti).each(function (index, element)
+                    {
+                        $('#dropdownProgettiModalAssegnazione #dropdownMenuProgettoAssegnazione').append("<a id=\"id"+element.nome+"\" class=\"dropdown-item\" value=\"" + element.nome + "\">"+element.nome+"</a>");
+                    });
 
-                      // Aggiungi l'evento di cambio sulla dropdownlist
-                      $('#dropdownProgettiModalAssegnazione #dropdownMenuProgettoAssegnazione a').on('click', function() 
-                      {
+                    // Aggiungi l'evento di cambio sulla dropdownlist
+                    $('#dropdownProgettiModalAssegnazione #dropdownMenuProgettoAssegnazione a').on('click', function() 
+                    {
+                        //prendi il valore selezionato della drop down
                         var selectedValueModalAssegnazioniDipendente = $(this).text();
+                        //aggiorna il bottone visibile della dropdown con il testo selezionato
                         $('#dropdownMenuButtonProgettoAssegnazione').text(selectedValueModalAssegnazioniDipendente);
                         //abiliti il tasto ok
                         okButtonModalAssegnazione.disabled = false;
-                      });
-                  },
-                  error: function(error) {
-                      console.error('Error', error);
-                  }
-              });
-          }
-
-          //funzione che popola la drop down list con tutti i competence center nel db
-          function componi_dati_competence()
-          {
-              $.ajax({
-                  url: 'http://localhost:8080/dipendenti/tuttiCompetence',
-                  type: 'GET',
-                  dataType: 'json', // Assuming your backend returns JSON
-                  success: function(competence) 
-                  {
-                      //popola gli oggetti nuovi
-                      $(competence).each(function (index, element)
-                      {
-                          $('#dropdownCompetence #dropdownmenuCompetence').append("<a id=\"id"+element+"\" class=\"dropdown-item\">"+element+"</a>");
-                      });
-
-                      // Aggiungi l'evento di cambio sulla dropdownlist
-                      $('#dropdownCompetence #dropdownmenuCompetence a').on('click', function() 
-                      {
-                          var selectedValueCompetence = $(this).text();
-                          invia_selezione_competence_al_server(selectedValueCompetence);
-                      });
-                  },
-                  error: function(error) {
-                      console.error('Error', error);
-                  }
-              });
-          }
-
-          //funzione che dato un progetto selezionato dalla drop down, ti fa vedere tutti i dipendenti su quel progetto
-          function invia_selezione_progetti_al_server(selectedValueProgetti)
-            {
-                $.ajax(
-                {
-                    type: 'GET',
-                    url: 'http://localhost:8080/assegnazioni/dipendentiSuProgetto/' + selectedValueProgetti, 
-                    success: function(response) 
-                    {
-                        // Gestisco la risposta dal server
-                        //rimuovi gli oggetti precedenti
-                        $('#dropdownMenuButtonProgetti').text(selectedValueProgetti);
-                        $("#tableProgetti tbody tr").remove();
-                        //popola gli oggetti nuovi
-                        $(response).each(function (index, element)
-                        {
-                            $('#tableProgetti tbody').append("<tr><td>"+element.dipendente.nome+"</td><td>"+element.dipendente.cognome+"</td><td>"+element.dipendente.email+"</td><td>"+element.dipendente.mansione+"</td></tr>)");
-                        });
-                    },
-                    error: function(error) 
-                    {
-                        console.error('Error', error);
-                        $('#dropdownMenuButtonProgetti').text(selectedValueProgetti);
-                    }
-                });
-            }
-
-        //funzione che popola la tabella con il radio button
-          function popola_tabella_sviluppatori_modal_assegnazione()
-          {
-              $.ajax(
-              {
-                  type: 'GET',
-                  url: 'http://localhost:8080/dipendenti/tuttiSviluppatori', 
-                  success: function(response) 
-                  {
-                      // Gestisco la risposta dal server
-                      //rimuovi gli oggetti precedenti
-                      $("#tableDipendentiModalAssegnazione tbody tr").remove();
-                      //popola gli oggetti nuovi
-                      const tableBody = $('#tableDipendentiModalAssegnazione tbody');
-                      tableBody.empty();
-                      $(response).each(function (index, element)
-                      {
-                        const row = $('<tr>');
-                        $('<td>').text(element.nome).appendTo(row);
-                        $('<td>').text(element.cognome).appendTo(row);
-                        $('<td>').text(element.email).appendTo(row);
-                        $('<td>').text(element.mansione).appendTo(row);
-                        //$('#tableDipendentiModalAssegnazione tbody').append("<tr><td>"+element.dipendente.nome+"</td><td>"+element.dipendente.cognome+"</td><td>"+element.dipendente.email+"</td><td>"+element.dipendente.mansione+"</td></tr>)");
-                        const radioCell = $('<td>');
-                        $('<input>').attr({
-                            type : 'radio',
-                            name : 'selezionaDipendente',
-                            value : element.email
-                        }).appendTo(radioCell);
-                        radioCell.appendTo(row);
-                        tableBody.append(row);
-                       });
-                    },
-                  error: function(error) 
-                  {
-                      console.error('Error', error);
-                  }
-              });
-          }
-
-          //funzione di gestione dell'evento di clic sul radio button della modale assegnazioni
-          $(document).on('click', 'input[name = "selezionaDipendente"]', function()
-          {
-            const email = $(this).val();
-            //alert("Prova " + email); PROVA PER VEDERE SE PRENDE LA MAIL IN INPUT
-            //chiama funzione per popolare dropdown box
-            componi_dati_progetti_non_assegnati_a_dipendente(email);
-          })
-
-            //funzione che dato una competence center selezionata dalla drop down, ti fa vedere i suoi dipendenti con il massimo stipendio
-            function invia_selezione_competence_al_server(selectedValueCompetence)
-            {
-                $.ajax(
-                {
-                    type: 'GET',
-                    url: 'http://localhost:8080/dipendenti/mostraStipendioAltoDipendente/' + selectedValueCompetence, 
-                    success: function(response) 
-                    {
-                        // Gestisco la risposta dal server
-                        //rimuovi gli oggetti precedenti
-                        $('#dropdownMenuButtonCompetence').text(selectedValueCompetence);
-                        $("#tableCompetence tbody tr").remove();
-                        //popola gli oggetti nuovi
-                        $(response).each(function (index, element)
-                        {
-                            $('#tableCompetence tbody').append("<tr><td>"+element.nome+"</td><td>"+element.cognome+"</td><td>"+element.email+"</td><td>"+element.mansione+"</td><td>"+element.stipendio+"</td></tr>)");
-                        });
-                    },
-                    error: function(error) 
-                    {
-                        console.error('Error', error);
-                        $('#dropdownMenuButtonCompetence').text(selectedValueCompetence);
-                    }
-                });
-            }
-
-            function effettua_logout(mailUtenteLoggato)
-            { 
-                $.ajax(
-                {
-                    type: 'GET',
-                    url: 'http://localhost:8080/dipendenti/logout/' + mailUtenteLoggato, 
-                    success: function(response) 
-                    {
-                        localStorage.removeItem('mail');
-                        alert("Logout effettuato");
-                        //reindirizzamento
-                        var url = "http://localhost/login.html";
-                        $(location).attr('href',url);
-                    },
-                    error: function(xhr, status, error) 
-                    {
-                        console.error("Errore durante la richiesta AJAX:", error);
-                        alert("Errore durante il logout");
-                    }
-                });
-            }
-
-            $("#logout").click(function(e)
-            {
-                effettua_logout(mailUtenteLoggato);
+                    });
+                },
+                error: function(error) {
+                    console.error('Error', error);
+                }
             });
+        }
+
+        //funzione che popola la drop down list con tutti i competence center che stanno nel db
+        function componi_dati_competence()
+        {
+            $.ajax({
+                url: 'http://localhost:8080/dipendenti/tuttiCompetence',
+                type: 'GET',
+                dataType: 'json', // Assuming your backend returns JSON
+                success: function(competence) 
+                {
+                    //popola gli oggetti nuovi
+                    $(competence).each(function (index, element)
+                    {
+                        $('#dropdownCompetence #dropdownmenuCompetence').append("<a id=\"id"+element+"\" class=\"dropdown-item\">"+element+"</a>");
+                    });
+
+                    // Aggiungi l'evento di cambio sulla dropdownlist
+                    $('#dropdownCompetence #dropdownmenuCompetence a').on('click', function() 
+                    {
+                        //prende il valore della drop down
+                        var selectedValueCompetence = $(this).text();
+                        //chiama la funzione che popola la tabelle con i dipendenti con lo stipendio massimo in base al competence selezionato nella drop down
+                        invia_selezione_competence_al_server(selectedValueCompetence);
+                    });
+                },
+                error: function(error) {
+                    console.error('Error', error);
+                }
+            });
+        }
+
+        //funzione che dato un progetto selezionato dalla drop down, ti fa vedere tutti i dipendenti su quel progetto
+        function invia_selezione_progetti_al_server(selectedValueProgetti)
+        {
+            $.ajax(
+            {
+                type: 'GET',
+                url: 'http://localhost:8080/assegnazioni/dipendentiSuProgetto/' + selectedValueProgetti, 
+                // Gestisco la risposta dal server
+                success: function(response) 
+                {
+                    //aggiorna il button della dropdown con la scelta selezionata
+                    $('#dropdownMenuButtonProgetti').text(selectedValueProgetti);
+                    //rimuovi gli oggetti precedenti
+                    $("#tableProgetti tbody tr").remove();
+                    //popola gli oggetti nuovi
+                    $(response).each(function (index, element)
+                    {
+                        $('#tableProgetti tbody').append("<tr><td>"+element.dipendente.nome+"</td><td>"+element.dipendente.cognome+"</td><td>"+element.dipendente.email+"</td><td>"+element.dipendente.mansione+"</td></tr>)");
+                    });
+                },
+                error: function(error) 
+                {
+                    console.error('Error', error);
+                    $('#dropdownMenuButtonProgetti').text(selectedValueProgetti);
+                }
+            });
+        }
+
+        //funzione che popola la tabella modal assegnazione con i dipendenti e con il radio button
+        function popola_tabella_sviluppatori_modal_assegnazione()
+        {
+            $.ajax(
+            {
+                type: 'GET',
+                url: 'http://localhost:8080/dipendenti/tuttiSviluppatori', 
+                success: function(response) 
+                {
+                    // Gestisco la risposta dal server
+                    //rimuovi gli oggetti precedenti
+                    $("#tableDipendentiModalAssegnazione tbody tr").remove();
+                    //popola gli oggetti nuovi
+                    const tableBody = $('#tableDipendentiModalAssegnazione tbody');
+                    tableBody.empty();
+                    $(response).each(function (index, element)
+                    {
+                    const row = $('<tr>');
+                    $('<td>').text(element.nome).appendTo(row);
+                    $('<td>').text(element.cognome).appendTo(row);
+                    $('<td>').text(element.email).appendTo(row);
+                    $('<td>').text(element.mansione).appendTo(row);
+                    //$('#tableDipendentiModalAssegnazione tbody').append("<tr><td>"+element.dipendente.nome+"</td><td>"+element.dipendente.cognome+"</td><td>"+element.dipendente.email+"</td><td>"+element.dipendente.mansione+"</td></tr>)");
+                    const radioCell = $('<td>');
+                    $('<input>').attr({
+                        type : 'radio',
+                        name : 'selezionaDipendente',
+                        value : element.email
+                    }).appendTo(radioCell);
+                    radioCell.appendTo(row);
+                    tableBody.append(row);
+                    });
+                },
+                error: function(error) 
+                {
+                    console.error('Error', error);
+                }
+            });
+        }
+
+        //funzione di gestione dell'evento di clic sul radio button della modale assegnazioni
+        $(document).on('click', 'input[name = "selezionaDipendente"]', function()
+        {
+            const email = $(this).val();
+            //alert("Prova " + email); 
+            //pulisci i valori di cui è popolata la drop down
+             $('#dropdownProgettiModalAssegnazione #dropdownMenuProgettoAssegnazione a').remove();
+            //chiama funzione per popolare dropdown box con i progetti in cui non è presente il dipendente
+            componi_dati_progetti_non_assegnati_a_dipendente(email);
+        })
+
+        //funzione che dato una competence center selezionata dalla drop down, ti fa vedere i suoi dipendenti con il massimo stipendio
+        function invia_selezione_competence_al_server(selectedValueCompetence)
+        {
+            $.ajax(
+            {
+                type: 'GET',
+                url: 'http://localhost:8080/dipendenti/mostraStipendioAltoDipendente/' + selectedValueCompetence, 
+                success: function(response) 
+                {
+                    // Gestisco la risposta dal server
+                    //rimuovi gli oggetti precedenti
+                    $('#dropdownMenuButtonCompetence').text(selectedValueCompetence);
+                    $("#tableCompetence tbody tr").remove();
+                    //popola gli oggetti nuovi
+                    $(response).each(function (index, element)
+                    {
+                        $('#tableCompetence tbody').append("<tr><td>"+element.nome+"</td><td>"+element.cognome+"</td><td>"+element.email+"</td><td>"+element.mansione+"</td><td>"+element.stipendio+"</td></tr>)");
+                    });
+                },
+                error: function(error) 
+                {
+                    console.error('Error', error);
+                    $('#dropdownMenuButtonCompetence').text(selectedValueCompetence);
+                }
+            });
+        }
+
+        function effettua_logout(mailUtenteLoggato)
+        { 
+            $.ajax(
+            {
+                type: 'GET',
+                url: 'http://localhost:8080/dipendenti/logout/' + mailUtenteLoggato, 
+                success: function(response) 
+                {
+                    localStorage.removeItem('mail');
+                    alert("Logout effettuato");
+                    //reindirizzamento
+                    var url = "http://localhost/login.html";
+                    $(location).attr('href',url);
+                },
+                error: function(xhr, status, error) 
+                {
+                    console.error("Errore durante la richiesta AJAX:", error);
+                    alert("Errore durante il logout");
+                }
+            });
+        }
+
+        //quando clicchi il tasto logout nella nav bar
+        $("#logout").click(function(e)
+        {
+            effettua_logout(mailUtenteLoggato);
+        });
 
       })
   </script>

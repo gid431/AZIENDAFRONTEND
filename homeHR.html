@@ -182,6 +182,7 @@
                     <div class="modal" tabindex="-1" role="dialog" aria-labelledby="modal4Title" id="myModalDipendente">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
+                                   
                                 <div class="modal-header">
                                     <h2 class="modal-title h5 " id="modal4Title">Compila i dati del dipendente</h2>
                                     <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Chiudi finestra modale">
@@ -246,7 +247,33 @@
 
                                         <div class="form-group mb-3">
                                             <label for="exampleInputStatoNascita">Stato di nascita</label>
-                                            <input type="name" class="form-control" id="inputStatoNascita" placeholder="Inserisci lo stato di nascita">
+                                            <div class="dropdown" id="dropdownStatoNascita">
+                                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButtonStatoNascita" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    Scegli lo stato nascita
+                                                </button>
+                                                <div class="dropdown-menu" id="dropdownmenuStatoNascita" aria-labelledby="dropdownMenuButton">
+                                                    <a id="idItalia" class="dropdown-item">Italia</a>
+                                                    <a id="idFrancia" class="dropdown-item">Francia</a>
+                                                    <a id="idGermania" class="dropdown-item">Germania</a>
+                                                    <a id="idRegnoUnito" class="dropdown-item">Regno Unito</a>
+                                                    <a id="idStatiUniti" class="dropdown-item">Stati Uniti</a>
+                                                    <a id="idCanada" class="dropdown-item">Canada</a>
+                                                    <a id="idSpagna" class="dropdown-item">Spagna</a>
+                                                    <a id="idAustralia" class="dropdown-item">Australia</a>
+                                                    <a id="idGiappone" class="dropdown-item">Giappone</a>
+                                                    <a id="idCina" class="dropdown-item">Cina</a>
+                                                    <a id="idBrasile" class="dropdown-item">Brasile</a>
+                                                    <a id="idIndia" class="dropdown-item">India</a>
+                                                    <a id="idMessico" class="dropdown-item">Messico</a>
+                                                    <a id="idRussia" class="dropdown-item">Russia</a>
+                                                    <a id="idCoreaDelSud" class="dropdown-item">Corea del Sud</a>
+                                                    <a id="idPaesiBassi" class="dropdown-item">Paesi Bassi</a>
+                                                    <a id="idSvezia" class="dropdown-item">Svezia</a>
+                                                    <a id="idSvizzera" class="dropdown-item">Svizzera</a>
+                                                    <a id="idNorvegia" class="dropdown-item">Norvegia</a>
+                                                    <a id="idDanimarca" class="dropdown-item">Danimarca</a>
+                                                </div>
+                                            </div>
                                         </div>
 
                                         <div class="form-group mb-3">
@@ -265,8 +292,8 @@
                                         </div>
 
                                         <div class="form-group mb-3">
-                                            <label for="exampleInputCellulare">Numero cellulare</label>
-                                            <input type="name" class="form-control" id="inputCellulare" placeholder="Inserisci il numero cellulare">
+                                            <label for="phone">Numero cellulare</label>
+                                            <input type="name" class="form-control" id="inputCellulare" name="phone" pattern="[0-9]{10}" placeholder="Inserisci il numero cellulare">
                                         </div>
 
                                         <div class="form-group mb-3">
@@ -280,7 +307,7 @@
                                         </div>
                                     </form>
                                 </div>
-
+                            
                                 <div class="modal-footer">
                                     <button id="okButtonModalDipendente" class="btn btn-primary btn-sm" type="button" disabled="">Ok</button>
                                 </div>
@@ -400,21 +427,31 @@
         });
         
 
-        // Seleziona tutti gli input del modulo progetto e dipendente (configurazione per abilitare disattivare il tasto ok)
+        // Seleziona tutti gli input del modulo progetto (configurazione per abilitare disattivare il tasto ok)
         var inputsProgetto = document.querySelectorAll('#myModalProgetto .modal-body input');
-        var inputsDipendente = document.querySelectorAll('#myModalDipendente .modal-body input');
-        // Seleziona il pulsante "Ok" progetto
+        // Seleziona il pulsante "Ok" di inserimento progetto
         var okButtonProgetto = document.querySelector('#okButtonModalPorogetto');
+
+        //seleziono gli input di dipendente
+        var inputsDipendente = document.querySelectorAll('#myModalDipendente .modal-body input');
+        //seleziono la dropdown di dipendente
+        var inputDropDownDipendente = document.querySelectorAll('#dropdownMenuButtonStatoNascita');
+        //seleziono il pulsante ok di inserimento dipendente
         var okButtonDipendente = document.querySelector('#okButtonModalDipendente');
+
+        //seleziono il pulsante ok di creazione assegnazione progetto a dipendente
         var okButtonModalAssegnazione = document.querySelector('#okButtonModalAssegnazione');
+
         // Funzione per controllare se tutti i campi della modal progetto sono stati compilati
         function checkInputsProgetto() 
         {
             var allFilled = true;
+            //per ogni elemento in inputsProgetto
             inputsProgetto.forEach(function(input) 
             {
                 if (input.value === '') 
                 {
+                    //tutti pieni uguale a falso
                     allFilled = false;
                 }
             });
@@ -428,18 +465,35 @@
         });
         // Controlla inizialmente se tutti i campi del modal progetto sono compilati per abilitare il tasto ok
         checkInputsProgetto();
+
+
+        // Controlla se una delle opzioni della dropdown è stata selezionata
+        function checkDropDownSelected() {
+            var selectedOptionText = document.querySelector('#dropdownMenuButtonStatoNascita').textContent;
+            return selectedOptionText.trim() !== 'Scegli lo stato nascita';
+        }
+
         // Funzione per controllare se tutti i campi della modal dipendente sono stati compilati
         function checkInputsDipendente() 
         {
+            //tutti riempiti uguale a vero
             var allFilled = true;
+            //per ogni elemento in inputsDipendente, 
             inputsDipendente.forEach(function(input) 
             {
+                //fai l'if controllando il suo value
                 if (input.value === '') 
                 {
+                    //tutti riempiti uguale a falso (ci sono dei campi vuoti)
                     allFilled = false;
                 }
             });
-            // Abilita il pulsante se tutti i campi sono compilati
+            // Controlla la dropdown list
+            if (!checkDropDownSelected()) 
+            {
+                allFilled = false;
+            }
+            //Abilita o disabilita il pulsante in base all'algoritmo
             okButtonDipendente.disabled = !allFilled;
         }
         // Aggiungi un listener per l'evento di input a tutti gli input del modulo
@@ -447,11 +501,20 @@
         {
             input.addEventListener('input', checkInputsDipendente);
         });
+
+        // Aggiungi l'evento di cambio sulla dropdownlist
+        $('#dropdownStatoNascita #dropdownmenuStatoNascita a').on('click', function() 
+        {
+            //prende il valore selezionato della dropdown list degli stati
+            var selectedValueStato = $(this).text();
+            $('#dropdownMenuButtonStatoNascita').text(selectedValueStato);
+        });
+
         // Controlla inizialmente se tutti i campi del modal dipendenti sono compilati per abilitare il tasto ok
         checkInputsDipendente();
 
 
-        //svuota le text box delle modal di inserimento progetto
+        //svuota le text box delle modal di inserimento progetto, chiamata quando si preme il tasto ok di inserimento progetto
         function svuota_textbox_modal_progetto()
         {
             $("#inputNomeProgetto").val("");
@@ -461,12 +524,12 @@
             okButtonProgetto.disabled = true;
         }
         
-        //svuota le text box delle modal di inserimento dipendente
+        //svuota le text box delle modal di inserimento dipendente, chiamato quando viene cliccato il tasto ok
         function svuota_textbox_modal_dipendente()
         {
             $("#inputNomeDipendente").val("");
             $("#inputCognomeDipendente").val("");
-            $("#inputStatoNascita").val("");
+            $('#dropdownMenuButtonStatoNascita').text("Scegli lo stato nascita");
             $("#inputProvinciaNascita").val("");
             $("#inputComuneNascita").val("");
             $("#inputCodiceFiscale").val("");
@@ -587,7 +650,8 @@
             var valoreSelezionatoMansione = radioButtonSelezionato1.value;
             var radioButtonSelezionato2 = document.querySelector('input[name="gruppo2"]:checked');
             var valoreSelezionatoCompetence = radioButtonSelezionato2.value;
-
+            var valoreSelezionatoStato = $('#dropdownMenuButtonStatoNascita').text();
+           
             var data = 
             {
                 nome: $("#inputNomeDipendente").val(),
@@ -596,7 +660,7 @@
 	            mansione: valoreSelezionatoMansione, 
                 data_nascita: $("#inputDataNascita").val(),
 	            stipendio: $("#inputStipendio").val(),
-                stato_nascita: $("#inputStatoNascita").val(),
+                stato_nascita: valoreSelezionatoStato,
                 provincia_nascita: $("#inputProvinciaNascita").val(),
                 comune_nascita: $("#inputComuneNascita").val(),
                 codice_fiscale: $("#inputCodiceFiscale").val(),
@@ -631,11 +695,41 @@
             });
         }
 
+        //funzione che data in input una variabile verifica se può essere a 10 cifre
+        function validatePhoneNumber(phoneNumber) 
+        {
+            var regex = /^\d{10}$/; // Espressione regolare per verificare se il numero è di 10 cifre
+            if (!regex.test(phoneNumber)) 
+            {
+                return false; //non contiene 10 cifre
+            }
+            else
+            {
+                return true; //contiene 10 cifre
+            } 
+        }
+
+        // Funzione per validare il Codice Fiscale italiano
+        function validateCodiceFiscale(cf) 
+        {
+            var valid = /^[A-Z]{6}\d{2}[A-Z]\d{2}[A-Z]\d{3}[A-Z]$/i.test(cf);
+            return valid;
+        }
+
         //quando clicchi ok alla modal di un inserimento di un dipendente
         $("#okButtonModalDipendente").click(function(e)
-        {
-            //inserisce un dipendente
-            invia_dati_modal_dipendente();
+        { 
+            var phoneNumber = document.getElementById("inputCellulare").value;
+            var codiceFiscale = $("#inputCodiceFiscale").val();
+            //si accerta che l'input della modal dipendente numero cellulare abbia un numero di cellulare a 10 cifre
+            if ( validatePhoneNumber(phoneNumber) && validateCodiceFiscale(codiceFiscale) ) 
+            {
+                // Se la validazione è passata, esegui la chiamata a invia_dati_modal_dipendente()
+                invia_dati_modal_dipendente();
+            } else 
+            {
+                alert("Il numero di telefono o il codice fiscale non sono validi.");
+            }
         });
 
         //funzione che popola la drop down list con tutti i progetti nel db

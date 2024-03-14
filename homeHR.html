@@ -584,13 +584,21 @@
                 contentType: "application/json",
                 success: function (response) 
                 {
-                    alert("Inserimento riuscito");
-                    svuota_textbox_modal_progetto();
+                    if(response === "ok")
+                    {
+                        alert("Inserimento riuscito");
+                        svuota_textbox_modal_progetto();
+                        // Chiudi la modal
+                        $('#myModalProgetto').modal('hide'); 
+                    }
+                    else
+                    {
+                        alert("Il nome è già esistente");
+                    }
                 },
                 error: function() 
                 {
                     alert("Errore durante l'inserimento");
-                    svuota_textbox_modal_progetto();
                 }
             });
         }
@@ -622,6 +630,8 @@
                 success: function(response) 
                 {
                     alert(response);
+                    // Chiudi la modal
+                    $('#myModalAssegnazione').modal('hide');
                 },
                 error: function(error) 
                 {
@@ -677,7 +687,7 @@
                 contentType: "application/json",
                 success: function (response) 
                 {
-                    if(response == "email uguale")
+                    if(response === "email uguale")
                     {
                         alert("Email già presente, inserire email diversa");
                     }
@@ -685,12 +695,13 @@
                     {
                         alert("Inserimento riuscito");
                         svuota_textbox_modal_dipendente();
+                        // Chiudi la modal
+                        $('#myModalDipendente').modal('hide'); 
                     }
                 },
                 error: function() 
                 {
                     alert("Errore durante l'inserimento");
-                    svuota_textbox_modal_dipendente();
                 }
             });
         }

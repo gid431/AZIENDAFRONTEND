@@ -92,10 +92,11 @@
                             <div class="modal-header">
                                 <h2 class="modal-title h5 " id="modal4Title">Compila i dati per la modifica del cellulare</h2>
                                 <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Chiudi finestra modale">
-                                <svg class="icon"><use href="/svg/sprites.svg#it-close"></use></svg>
                                 </button>
                             </div>
                             <div class="modal-body">
+                                <span>Il tuo numero di telefono è: </span><span id="cellulareAttuale"></span>
+                                <br><br>
                                 <form action="http://localhost:8080/dipendenti/updateCellulare" method="GET">
                                     <div class="form-group mb-3">
                                         <label for="exampleInputNome">Numero cellulare nuovo</label>
@@ -147,6 +148,11 @@
       get_mansione_utente_loggato(mailUtenteLoggato, function(mansione) {
           document.getElementById("mansione").innerHTML = mansione;
       });
+      //popolo l'elemento html con id cellulareAttuale con il risultato della funzione
+        get_cellulare_utente_loggato(mailUtenteLoggato, function(cellulare) 
+        {
+            document.getElementById("cellulareAttuale").innerHTML = cellulare;
+        });
 
       //configurazione delle modal di modifica numero cellulare per farla visualizzare
       var buttonCellulare = document.getElementById('buttonCellulare');
@@ -261,6 +267,40 @@
           });
       }
 
+      //funzione che data la mail dell'utente loggato, ti ritorna la mansione
+      function get_cellulare_utente_loggato(mailUtenteLoggato, callback)
+      {
+          $.ajax(
+          {
+                type: 'GET',
+                url: 'http://localhost:8080/dipendenti/getCellulareDipentente/' + mailUtenteLoggato, 
+                success: function(response) 
+                {
+                    callback(response);
+                    
+                },
+                error: function(error) 
+                {
+                    console.error('Error', error);
+                    callback("errore nella richiesta");
+                }
+          });
+      }
+
+      //funzione che data in input una variabile verifica se può essere a 10 cifre
+      function validatePhoneNumber(phoneNumber) 
+      {
+          var regex = /^\d{10}$/; // Espressione regolare per verificare se il numero è di 10 cifre
+          if (!regex.test(phoneNumber)) 
+          {
+              return false; //non contiene 10 cifre
+          }
+          else
+          {
+              return true; //contiene 10 cifre
+          } 
+      }
+
       //funzione che modifica il numero di cellulare del dipendente loggato
       function modifica_cellulare(mailUtenteLoggato)
       {
@@ -271,14 +311,16 @@
               url: 'http://localhost:8080/dipendenti/updateCellulare/' + mailUtenteLoggato + "/" + cellulare, 
               success: function(response) 
               {
-                  // Gestisco la risposta dal server
-                  alert("Modifica effettuata");
-                  svuota_textbox_modal_cellulare(); 
+                    // Gestisco la risposta dal server
+                    alert("Modifica effettuata");
+                    svuota_textbox_modal_cellulare();
+                    // Chiudi la modal
+                    $('#myModalCellulare').modal('hide'); 
               },
               error: function(error) 
               {
-                alert("Errore durante la modifica");
-                svuota_textbox_modal_cellulare();
+                    alert("Errore durante la modifica");
+                    svuota_textbox_modal_cellulare();
               }
           });
       }
@@ -307,7 +349,15 @@
 
       $("#okButtonModalCellulare").click(function(e)
       {
-          modifica_cellulare(mailUtenteLoggato);
+            var cellulare = $("#inputCellulare").val();
+            if( validatePhoneNumber(cellulare) )
+            {
+                modifica_cellulare(mailUtenteLoggato);
+            }
+            else
+            {
+                alert("Il numero di telefono non è valido.");
+            }
       });
 
       $("#logout").click(function(e)
